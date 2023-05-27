@@ -1,0 +1,60 @@
+html,
+body,
+#root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #bff376;
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    perspective: 100px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.startButton {
+    display: block;
+    margin: 40px 0;
+    width: 240px;
+    height: 80px;
+    border: 4px solid #267cd1;
+
+    background: linear-gradient(90deg, rgb(29, 80, 209) 0%, rgb(91, 48, 198) 35%, rgb(53, 109, 152) 100%);
+    font-size: 18px;
+    border-radius: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: .3s ease-out;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 900;
+    color: #59d126;
+    font-size: 24px;
+}
+
+.startButton:hover {
+    transform: rotateX(25deg);
+    box-shadow: 0 15px 15px #9d8ff4;
+}
+
+.startButton:active {
+    transition: .1s ease-out;
+    transform: translateY(4px) rotateX(25deg) scale(0.94);
+    box-shadow: 0 24px 24px #9d8ff4;
+}
