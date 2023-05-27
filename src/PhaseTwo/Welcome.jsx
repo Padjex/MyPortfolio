@@ -22,7 +22,7 @@ export function Letter({ text3DProps, rigidBodyProps, position, l }) {
         <Text3D {...text3DProps} position={position} ref={da}>
           {l}
         </Text3D>
-        {/* abc */}
+
         {/* </Center> */}
       </RigidBody>
     </>
