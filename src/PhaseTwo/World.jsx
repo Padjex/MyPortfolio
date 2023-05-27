@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Debug, RigidBody, Physics } from "@react-three/rapier";
 import Welcome from "./Welcome";
-//
+
 export default function World() {
   const phase = storeMenager((state) => state.phase);
   const { camera } = useThree();
