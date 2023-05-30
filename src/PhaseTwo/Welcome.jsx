@@ -26,17 +26,20 @@ const text3DMaterial4 = new THREE.MeshStandardMaterial({
   color: "#3a35b8",
 });
 
+// ////
+// Letter component
+// ////
 export function Letter({
   letter,
   position,
-  rotation,
   newPosition,
   material,
   size,
+  rigidBodyProps,
 }) {
   const text3DProps = useMemo(() => {
     const text3DProps = {
-      font: "./fonts/helvetiker_regular.typeface.json",
+      font: "./fonts/dad.json",
       castShadow: true,
       size: size,
       bevelEnabled: true,
@@ -52,13 +55,13 @@ export function Letter({
   const letterRef = useRef();
   useEffect(() => {
     const getNewPosition = position;
-    getNewPosition[0] += letterRef.current.geometry.boundingBox.max.x * 1.2;
+    getNewPosition[0] += letterRef.current.geometry.boundingBox.max.x * 1.25;
     newPosition((prev) => [...prev, getNewPosition]);
   }, []);
 
   return (
     <>
-      <RigidBody rotation={rotation}>
+      <RigidBody {...rigidBodyProps}>
         <Text3D
           ref={letterRef}
           {...text3DProps}
@@ -71,7 +74,9 @@ export function Letter({
     </>
   );
 }
-
+// ////
+// Word component
+// ////
 export function Word({ wordProp }) {
   const { camera } = useThree();
   const [letter, setLetter] = useState([]);
@@ -104,12 +109,12 @@ export function Word({ wordProp }) {
       return (
         <Letter
           letter={letter}
-          rotation={wordProp.rotation}
           position={letterPosition}
           key={index}
           newPosition={setLetterPosition}
           material={wordProp.material}
           size={wordProp.size}
+          rigidBodyProps={wordProp.rigidBodyProps}
         />
       );
     });
@@ -120,8 +125,20 @@ export function Word({ wordProp }) {
   return <>{letter}</>;
 }
 
+// ////
+// Welcome component
+// ////
 export default function Welcome() {
   const [word, setWord] = useState([]);
+  const hitSound = useMemo(() => {
+    return new Audio("./sounds/hit.mp3");
+  }, []);
+
+  const collisionEnter = () => {
+    // console.log(hitSound);
+    hitSound.currentTime = 0;
+    hitSound.play();
+  };
   const wordProps = useMemo(() => {
     return [
       {
@@ -130,8 +147,11 @@ export default function Welcome() {
         word: "WELCOME",
         cameraPosition: false,
         duration: 0.54,
-        rotation: [0, 0, 0],
         size: 2,
+        rigidBodyProps: {
+          rotation: [0, 0, 0],
+          onCollisionEnter: collisionEnter,
+        },
       },
       {
         startPosition: [4.5, 5, 1],
@@ -139,8 +159,11 @@ export default function Welcome() {
         word: "TO",
         cameraPosition: [-7, -1, 20],
         duration: 0.94,
-        rotation: [0, -0.24, 0],
         size: 1.54,
+        rigidBodyProps: {
+          rotation: [0, -0.24, 0],
+          onCollisionEnter: collisionEnter,
+        },
       },
       {
         startPosition: [-13.5, 5, 1.4],
@@ -148,8 +171,11 @@ export default function Welcome() {
         word: "My",
         cameraPosition: [4, -1, 24],
         duration: 0.7,
-        rotation: [0, 0.44, 0],
-        size: 1.8,
+        size: 1.84,
+        rigidBodyProps: {
+          rotation: [0, 0.44, 0],
+          onCollisionEnter: collisionEnter,
+        },
       },
       {
         startPosition: [-7.1, 5, 5],
@@ -157,8 +183,11 @@ export default function Welcome() {
         word: "PORTFOLIO",
         cameraPosition: [1, -1, 36],
         duration: 0.84,
-        rotation: [0, -0.05, 0],
         size: 2.4,
+        rigidBodyProps: {
+          rotation: [0, -0.05, 0],
+          onCollisionEnter: collisionEnter,
+        },
       },
     ];
   }, []);

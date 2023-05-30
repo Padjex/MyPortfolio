@@ -46,7 +46,7 @@ export default function World() {
         {/* <Debug /> */}
         <RigidBody type="fixed" restitution={0} friction={0}>
           <mesh receiveShadow position-y={-2}>
-            <boxGeometry args={[80, 0.5, 80]} />
+            <boxGeometry args={[180, 0.5, 280]} />
             <meshStandardMaterial color="greenyellow" />
           </mesh>
         </RigidBody>
