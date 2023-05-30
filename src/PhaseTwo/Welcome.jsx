@@ -135,7 +135,6 @@ export default function Welcome() {
   }, []);
 
   const collisionEnter = () => {
-    // console.log(hitSound);
     hitSound.currentTime = 0;
     hitSound.play();
   };

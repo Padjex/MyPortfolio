@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Debug, RigidBody, Physics } from "@react-three/rapier";
 import Welcome from "./Welcome";
+import Plane from "./Plane";
 
 export default function World() {
   const phase = storeMenager((state) => state.phase);
@@ -50,6 +51,7 @@ export default function World() {
             <meshStandardMaterial color="greenyellow" />
           </mesh>
         </RigidBody>
+        <Plane />
 
         {welcome ? <Welcome /> : null}
       </Physics>
