@@ -2,7 +2,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import storeMenager from "../Store/storeMenager";
 import { Sky, PresentationControls, Cloud, useMask } from "@react-three/drei";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Debug, RigidBody, Physics } from "@react-three/rapier";
 import Welcome from "./Welcome";
@@ -32,15 +32,15 @@ export default function World() {
       <Cloud
         opacity={1}
         speed={0.1}
-        width={2}
-        position={[-10, 10, -10]}
+        width={20}
+        position={[-10, 30, -200]}
         depth={9}
       />
       <Cloud
         opacity={1}
         speed={0.1}
-        width={2}
-        position={[10, 10, -10]}
+        width={21}
+        position={[10, 30, -200]}
         depth={9}
       />
       <Physics>
@@ -51,9 +51,11 @@ export default function World() {
             <meshStandardMaterial color="greenyellow" />
           </mesh>
         </RigidBody>
-        <Plane />
+        <Suspense>
+          <Plane phase={phase} />
+        </Suspense>
 
-        {welcome ? <Welcome /> : null}
+        {/* {welcome ? <Welcome /> : null} */}
       </Physics>
     </>
   );
