@@ -6,7 +6,10 @@ body,
     left: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
+
+
 
 body {
     margin: 0;
@@ -15,8 +18,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #bff376;
+    background-color: #e6ffff;
+
 }
+
+
 
 .container {
     position: absolute;
@@ -27,6 +33,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .startButton {
@@ -34,9 +41,9 @@ body {
     margin: 40px 0;
     width: 240px;
     height: 80px;
-    border: 4px solid #267cd1;
+    border: 4px solid #e2fffd;
 
-    background: linear-gradient(90deg, rgb(194, 209, 29) 0%, rgb(12, 153, 54) 35%, rgb(39, 26, 132) 100%);
+    background: linear-gradient(90deg, #8a96ff 0%, #fff6f6 50%, #5ce7fc 100%);
     font-size: 18px;
     border-radius: 14px;
     outline: none;
@@ -44,17 +51,61 @@ body {
     transition: .3s ease-out;
     font-family: 'Times New Roman', Times, serif;
     font-weight: 900;
-    color: #59d126;
+    color: #ff9b9b;
+
+    text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
+        1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
     font-size: 24px;
+
 }
 
 .startButton:hover {
     transform: rotateX(25deg);
-    box-shadow: 0 15px 15px #64ce5e;
+    box-shadow: 0 15px 15px #ff9b9b;
 }
 
 .startButton:active {
     transition: .1s ease-out;
     transform: translateY(4px) rotateX(25deg) scale(0.94);
-    box-shadow: 0 24px 24px #64ce5e;
+    box-shadow: 0 24px 24px #ff9b9b;
+}
+
+.scrollDiv {
+    position: absolute;
+    background: linear-gradient(90deg, #8a96ff 0%, #fff6f6 50%, #5ce7fc 100%);
+    bottom: 10%;
+    left: 50%;
+
+    width: 40px;
+    height: 60px;
+    transform: translateX(-50%);
+
+    border: 2px solid #ffffff;
+    border-radius: 40px;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    scale: 0;
+}
+
+.scrollDot {
+    border-radius: 50%;
+    background-color: #8d8d8d;
+    border: 1px solid #f0eeee;
+    position: relative;
+    width: 7px;
+    height: 10px;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.scrollText {
+    position: relative;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+
+    color: #6652ff;
+
 }

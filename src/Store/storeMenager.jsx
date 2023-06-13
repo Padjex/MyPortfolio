@@ -11,5 +11,11 @@ export default create((set, get) => {
         return { phase: 2 };
       });
     },
+    scroll: false,
+    enableScroll: () => {
+      set(() => {
+        return { scroll: true };
+      });
+    },
   };
 });

@@ -1,21 +1,38 @@
-import { DoubleSide } from "three";
+import { BackSide, DoubleSide, FrontSide } from "three";
+import { extend, useFrame } from "@react-three/fiber";
+import { shaderMaterial, useTexture } from "@react-three/drei";
 import flagVertexShader from "./shaders/flag/vertex.glsl";
 import flagFragmentShader from "./shaders/flag/fragment.glsl";
-// import { shaderMaterial } from "@react-three/drei";
-console.log(flagFragmentShader);
-console.log(flagVertexShader);
+import { useEffect, useRef } from "react";
+
+const FlagShader = shaderMaterial(
+  {
+    uTime: 0,
+    uTexture: null,
+  },
+  flagVertexShader,
+  flagFragmentShader
+);
+extend({ FlagShader });
 
 export default function Flag() {
+  const flagTexture = useTexture("./flag/rpp.jpg");
+
+  const flagShader = useRef();
+
+  useEffect(() => {
+    flagShader.current.uniforms.uTexture.value = flagTexture;
+  }, [flagTexture]);
+
+  useFrame((state, delta) => {
+    flagShader.current.uTime += delta * 3;
+  });
+
   return (
     <>
-      <mesh position={[0, 1, 34]} rotation={[0, Math.PI * 0.5, 0]}>
+      <mesh position={[0, 1, 31]} rotation={[0, -Math.PI * 0.5, 0]}>
         <planeGeometry args={[24, 6, 128, 128]} />
-        <shaderMaterial
-          side={DoubleSide}
-          uniforms={{ uBigElevation: { value: 0.2 } }}
-          vertexShader={flagVertexShader}
-          fragmentShader={flagFragmentShader}
-        />
+        <flagShader ref={flagShader} side={DoubleSide} />
       </mesh>
     </>
   );

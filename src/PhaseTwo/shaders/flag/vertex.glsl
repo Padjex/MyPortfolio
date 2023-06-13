@@ -1,15 +1,17 @@
-uniform float uBigElevation;
+uniform float uTime;
 
 varying vec2 vUv;
 
 void main()
 {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-    float x = modelPosition.z;
+    // float x = modelPosition.z;
 
     // modelPosition.x -= sin(modelPosition.z ) * uBigElevation * x;
 
-    modelPosition.z += cos((uv.x * 40.0)) * (1.0 - uv.x);
+    modelPosition.z += sin((uv.x * 40.0) + uTime) * (uv.x) * 0.8 ;
+    modelPosition.z += sin((uv.y * 10.0) + uTime) * (1.0 - uv.y) * 0.4;
+    
     // modelPosition.x = 5.0;
    
     

@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { RigidBody } from "@react-three/rapier";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import storeMenager from "../Store/storeMenager";
 
 const text3DMaterial1 = new THREE.MeshStandardMaterial({
   metalness: 0,
@@ -133,6 +134,7 @@ export default function Welcome() {
   const hitSound = useMemo(() => {
     return new Audio("./sounds/hit.mp3");
   }, []);
+  const enableScroll = storeMenager((state) => state.enableScroll);
 
   const collisionEnter = () => {
     hitSound.currentTime = 0;
@@ -157,7 +159,7 @@ export default function Welcome() {
         material: text3DMaterial3,
         word: "TO",
         cameraPosition: [-7, -1, 20],
-        duration: 0.94,
+        duration: 0.6,
         size: 1.54,
         rigidBodyProps: {
           rotation: [0, -0.24, 0],
@@ -169,7 +171,7 @@ export default function Welcome() {
         material: text3DMaterial1,
         word: "My",
         cameraPosition: [4, -1, 24],
-        duration: 0.7,
+        duration: 0.44,
         size: 1.84,
         rigidBodyProps: {
           rotation: [0, 0.44, 0],
@@ -180,8 +182,8 @@ export default function Welcome() {
         startPosition: [-7.1, 5, 5],
         material: text3DMaterial4,
         word: "PORTFOLIO",
-        cameraPosition: [1, -1, 36],
-        duration: 0.84,
+        cameraPosition: [1, -1, 30],
+        duration: 0.74,
         size: 2.4,
         rigidBodyProps: {
           rotation: [0, -0.05, 0],
@@ -204,8 +206,16 @@ export default function Welcome() {
       count++;
       setWord((prevState) => [...prevState, components.pop()]);
       if (count === wordProps.length) clearInterval(timer);
-    }, 1000);
+    }, 800);
   }, []);
+
+  useEffect(() => {
+    if (word.length === 4) {
+      setTimeout(() => {
+        enableScroll();
+      }, 900);
+    }
+  }, [word]);
 
   return <>{word}</>;
 }
