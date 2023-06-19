@@ -94,6 +94,9 @@ export function Word({ wordProp }) {
         y: wordProp.cameraPosition[1],
         z: wordProp.cameraPosition[2],
         ease: "power1.out",
+        onUpdate: () => {
+          camera.lookAt(0, 0, 0);
+        },
       });
     }
     // lettersAnimation
@@ -140,6 +143,7 @@ export default function Welcome() {
     hitSound.currentTime = 0;
     hitSound.play();
   };
+
   const wordProps = useMemo(() => {
     return [
       {
@@ -213,7 +217,7 @@ export default function Welcome() {
     if (word.length === 4) {
       setTimeout(() => {
         enableScroll();
-      }, 900);
+      }, 3500);
     }
   }, [word]);
 

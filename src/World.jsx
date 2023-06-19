@@ -1,13 +1,24 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import storeMenager from "./Store/storeMenager";
-import { Sky, PresentationControls, Cloud, useScroll } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import * as THREE from "three";
+import {
+  Sky,
+  PresentationControls,
+  Cloud,
+  ScrollControls,
+} from "@react-three/drei";
+import {
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Debug, RigidBody, Physics } from "@react-three/rapier";
 import Welcome from "./PhaseTwo/Welcome";
 import Plane from "./PhaseTwo/Plane";
-import ShowScroll from "./PhaseTwo/ShowScroll";
+import CameraOnScroll from "./CameraOnScroll";
 
 export default function World() {
   const phase = storeMenager((state) => state.phase);
@@ -17,24 +28,21 @@ export default function World() {
 
   const [welcome, setWelcome] = useState(false);
 
-  const scroll = useScroll();
-
-  useFrame((state, delta) => {
-    if (enableScroll) {
-      state.camera.position.z += scroll.scroll.current * delta;
-    }
-  });
-
   useEffect(() => {
-    if (phase == 2) {
-      gsap.to(camera.position, {
-        duration: 1.8,
-        z: 20,
-        y: -1,
-        ease: "power2.out",
-        onComplete: setWelcome(true),
-      });
-    }
+    if (phase == 2)
+      if (!welcome) {
+        gsap.to(camera.position, {
+          duration: 1.8,
+          z: 20,
+          y: -1,
+          ease: "power2.out",
+          onUpdate: () => {
+            camera.lookAt(0, 0, 0);
+          },
+          onComplete: setWelcome(true),
+        });
+      }
+    return () => {};
   }, [phase]);
 
   return (
@@ -69,6 +77,8 @@ export default function World() {
         </Suspense>
 
         {welcome ? <Welcome /> : null}
+        {enableScroll ? <CameraOnScroll /> : null}
+        {/* <CameraOnScroll /> */}
       </Physics>
     </>
   );

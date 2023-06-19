@@ -2,7 +2,6 @@ import { useGLTF, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Flag from "./Flag";
-import storeMenager from "../Store/storeMenager";
 
 export default function Plane({ phase }) {
   const { nodes } = useMemo(() => useGLTF("./plane/plane6.glb"));
@@ -34,7 +33,7 @@ export default function Plane({ phase }) {
     const elapsedTime = state.clock.elapsedTime;
     propeller.current.rotation.y += delta * 30;
     if (planeStart) {
-      plane.current.position.x -= delta * 25;
+      plane.current.position.x -= delta * 30;
       if (plane.current.position.x < -150) {
         setPlaneStart(false);
       }

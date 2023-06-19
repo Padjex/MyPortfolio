@@ -17,5 +17,16 @@ export default create((set, get) => {
         return { scroll: true };
       });
     },
+    stage: 1,
+    stageUp: () => {
+      set(() => {
+        return { stage: stage + 1 };
+      });
+    },
+    stageDown: () => {
+      set(() => {
+        return { stage: stage - 1 };
+      });
+    },
   };
 });

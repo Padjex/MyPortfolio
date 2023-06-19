@@ -6,13 +6,16 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
 export default function Experience() {
+  const enableScroll = storeMenager((state) => state.scroll);
+
   return (
     <>
-      <Perf />
-      <OrbitControls enableZoom={false} />
+      {/* <Perf /> */}
+
       <directionalLight position={[-2, 2, 3]} intensity={1.5} castShadow />
       <ambientLight intensity={0.5} />
-      <ScrollControls pages={1} damping={0.3} style={{ opacity: 0 }}>
+
+      <ScrollControls pages={5} damping={0.33}>
         <World />
       </ScrollControls>
     </>
