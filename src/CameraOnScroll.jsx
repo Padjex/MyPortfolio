@@ -72,7 +72,7 @@ export default function () {
 
   // Set props for new stage
   useEffect(() => {
-    console.log(stage);
+    // console.log(stage);
 
     tl.current = gsap.timeline();
     tl.current.fromTo(
