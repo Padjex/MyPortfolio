@@ -19,13 +19,17 @@ export default create((set, get) => {
     },
     stage: 1,
     stageUp: () => {
-      set(() => {
-        return { stage: stage + 1 };
+      set((state) => {
+        if (state.stage == 4) {
+          return { stage: 1 };
+        } else {
+          return { stage: state.stage + 1 };
+        }
       });
     },
     stageDown: () => {
-      set(() => {
-        return { stage: stage - 1 };
+      set((state) => {
+        return { stage: state.stage - 1 };
       });
     },
   };

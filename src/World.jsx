@@ -19,6 +19,7 @@ import { Debug, RigidBody, Physics } from "@react-three/rapier";
 import Welcome from "./PhaseTwo/Welcome";
 import Plane from "./PhaseTwo/Plane";
 import CameraOnScroll from "./CameraOnScroll";
+import Stage2 from "./AboutMe/Stage2";
 
 export default function World() {
   const phase = storeMenager((state) => state.phase);
@@ -79,6 +80,7 @@ export default function World() {
         {welcome ? <Welcome /> : null}
         {enableScroll ? <CameraOnScroll /> : null}
         {/* <CameraOnScroll /> */}
+        <Stage2 />
       </Physics>
     </>
   );

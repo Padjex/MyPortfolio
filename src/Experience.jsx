@@ -10,12 +10,12 @@ export default function Experience() {
 
   return (
     <>
-      {/* <Perf /> */}
+      <Perf />
 
       <directionalLight position={[-2, 2, 3]} intensity={1.5} castShadow />
       <ambientLight intensity={0.5} />
 
-      <ScrollControls pages={5} damping={0.33}>
+      <ScrollControls pages={2} damping={0.33}>
         <World />
       </ScrollControls>
     </>

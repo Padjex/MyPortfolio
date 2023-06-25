@@ -75,6 +75,7 @@ export function Letter({
     </>
   );
 }
+
 // ////
 // Word component
 // ////
@@ -104,7 +105,13 @@ export function Word({ wordProp }) {
     const timer = setInterval(() => {
       count++;
       setLetter((prevState) => [...prevState, components.pop()]);
-      if (count === word.length) clearInterval(timer);
+
+      if (count === word.length) {
+        // Needs to set enableScroll = true, when is the last letter
+        if (wordProp.end) {
+        }
+        clearInterval(timer);
+      }
     }, 80);
   }, []);
 
@@ -174,7 +181,7 @@ export default function Welcome() {
         startPosition: [-13.5, 5, 1.4],
         material: text3DMaterial1,
         word: "My",
-        cameraPosition: [4, -1, 24],
+        cameraPosition: [4, -0.9, 22],
         duration: 0.44,
         size: 1.84,
         rigidBodyProps: {
@@ -186,13 +193,14 @@ export default function Welcome() {
         startPosition: [-7.1, 5, 5],
         material: text3DMaterial4,
         word: "PORTFOLIO",
-        cameraPosition: [1, -1, 30],
+        cameraPosition: [0, -1, 27],
         duration: 0.74,
         size: 2.4,
         rigidBodyProps: {
           rotation: [0, -0.05, 0],
           onCollisionEnter: collisionEnter,
         },
+        end: true,
       },
     ];
   }, []);
@@ -217,7 +225,7 @@ export default function Welcome() {
     if (word.length === 4) {
       setTimeout(() => {
         enableScroll();
-      }, 3500);
+      }, 1000);
     }
   }, [word]);
 

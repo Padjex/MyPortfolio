@@ -10,64 +10,125 @@ export default function () {
   const scroll = useScroll();
   const tl = useRef();
 
-  const [stage, setStage] = useState(1);
-  // const stage = storeMenager((state) => state.stage);
+  // const [stage, setStage] = useState(1);
+  const stage = storeMenager((state) => state.stage);
+  const stageUp = storeMenager((state) => state.stageUp);
+  const stageDown = storeMenager((state) => state.stageDown);
 
   const [stageChanged, setstageChanged] = useState(false);
 
-  useEffect(() => {
-    scroll.el.scrollTo({ top: 0 });
+  const [startScrollPosition, setStartScrollPosition] = useState(
+    scroll.el.clientHeight
+  );
+
+  const [smoothedCameraLookAt] = useState(() => new THREE.Vector3());
+
+  // Set start scroll position
+  useLayoutEffect(() => {
+    setStartScrollPosition(scroll.el.clientHeight * scroll.pages * 0.01);
   }, []);
 
-  const stageProps = [
-    {
-      cameraPosition: [6, 0, 40],
-      duration: 2,
-    },
-    {
-      cameraPosition: [6, 0, 80],
-      duration: 2,
-    },
-    {
-      cameraPosition: [6, 0, 120],
-      duration: 2,
-    },
-  ];
+  // Resize
+  useEffect(() => {
+    const resizeListener = window.addEventListener("resize", (s) => {
+      setStartScrollPosition(scroll.el.clientHeight * scroll.pages * 0.01);
+    });
 
+    scroll.el.scrollTo({ top: startScrollPosition });
+    return () => {
+      removeEventListener("resize", resizeListener);
+    };
+  }, [startScrollPosition]);
+
+  // Stage props
+  const stageProps = useMemo(() => {
+    return [
+      {
+        cameraPositionStart: [0, -1, 27],
+        cameraPositionEnd: [1, -1, 40],
+        duration: 1,
+        cameraLookAt: new THREE.Vector3(0, 0.2, 0),
+      },
+      {
+        cameraPositionStart: [1, -1, 40],
+        cameraPositionEnd: [20, -0.5, 24],
+        duration: 1,
+        cameraLookAt: new THREE.Vector3(30, 0, 20),
+      },
+      {
+        cameraPositionStart: [6, -0.5, 80],
+        cameraPositionEnd: [6, -1, 120],
+        duration: 1,
+        cameraLookAt: new THREE.Vector3(40, 0.2, 50),
+      },
+      {
+        cameraPositionStart: [6, -0.5, 80],
+        cameraPositionEnd: [6, -0.4, 20],
+        duration: 1,
+        cameraLookAt: new THREE.Vector3(0, 0.2, 0),
+      },
+    ];
+  });
+
+  // Set props for new stage
   useEffect(() => {
     console.log(stage);
 
     tl.current = gsap.timeline();
-    tl.current.to(camera.position, {
-      x: stageProps[stage - 1].cameraPosition[0],
-      y: stageProps[stage - 1].cameraPosition[1],
-      z: stageProps[stage - 1].cameraPosition[2],
+    tl.current.fromTo(
+      camera.position,
+      {
+        x: stageProps[stage - 1].cameraPositionStart[0],
+        y: stageProps[stage - 1].cameraPositionStart[1],
+        z: stageProps[stage - 1].cameraPositionStart[2],
+      },
+      {
+        x: stageProps[stage - 1].cameraPositionEnd[0],
+        y: stageProps[stage - 1].cameraPositionEnd[1],
+        z: stageProps[stage - 1].cameraPositionEnd[2],
 
-      duration: stageProps[stage - 1].duration,
-    });
+        duration: stageProps[stage - 1].duration,
+      }
+    );
 
-    setTimeout(() => {
-      setstageChanged(false);
-    }, 40);
+    setstageChanged(false);
 
     return () => {
-      console.log("kill");
       tl.current.kill();
     };
   }, [stage]);
 
   useFrame(() => {
-    // tl.current.seek(scroll.offset * tl.current.duration());
-    tl.current.seek(scroll.scroll.current * tl.current.duration());
+    tl.current.seek(scroll.offset * tl.current.duration());
+    // tl.current.seek(0.0001);
 
-    if (scroll.offset > 0.9) {
+    // tl.current.seek(scroll.scroll.current * tl.current.duration());
+    // console.log(camera.position);
+    // console.log(scroll.scroll.current);
+
+    // Scroll Down
+    if (scroll.scroll.current == 1) {
       if (!stageChanged) {
-        setStage(stage + 1);
-
+        stageUp();
         setstageChanged(true);
-        scroll.el.scrollTo({ top: 0 });
+        scroll.el.scrollTo({ top: startScrollPosition });
       }
     }
+    // Scroll Up
+    if (stage != 1) {
+      if (scroll.scroll.current == 0) {
+        stageDown();
+        setstageChanged(true);
+        scroll.el.scrollTo({ top: startScrollPosition });
+      }
+    }
+
+    // Camera LookAt animation
+    const cameraLookAt = new THREE.Vector3();
+    cameraLookAt.copy(stageProps[stage - 1].cameraLookAt);
+
+    smoothedCameraLookAt.lerp(cameraLookAt, 0.024);
+    camera.lookAt(smoothedCameraLookAt);
   });
 
   return <>{/* <OrbitControls enableZoom={false} /> */}</>;
