@@ -1,6 +1,7 @@
 uniform float uTime;
 
 varying vec2 vUv;
+varying float vElevation;
 
 void main()
 {
@@ -21,5 +22,7 @@ void main()
     vec4 projectedPosition = projectionMatrix * viewPosition;
     gl_Position = projectedPosition;
 
+    vElevation = modelPosition.z + 40.0;
     vUv = uv;
+    
 }

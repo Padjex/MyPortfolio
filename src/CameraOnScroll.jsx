@@ -20,18 +20,23 @@ export default function () {
   const [startScrollPosition, setStartScrollPosition] = useState(
     scroll.el.clientHeight
   );
+  const [endScrollPosition, setEndScrollPosition] = useState(
+    scroll.el.clientHeight
+  );
 
   const [smoothedCameraLookAt] = useState(() => new THREE.Vector3());
 
   // Set start scroll position
   useLayoutEffect(() => {
     setStartScrollPosition(scroll.el.clientHeight * scroll.pages * 0.01);
+    setEndScrollPosition(scroll.el.clientHeight * scroll.pages * 0.99);
   }, []);
 
   // Resize
   useEffect(() => {
     const resizeListener = window.addEventListener("resize", (s) => {
       setStartScrollPosition(scroll.el.clientHeight * scroll.pages * 0.01);
+      setEndScrollPosition(scroll.el.clientHeight * scroll.pages * 0.99);
     });
 
     scroll.el.scrollTo({ top: startScrollPosition });
@@ -45,21 +50,21 @@ export default function () {
     return [
       {
         cameraPositionStart: [0, -1, 27],
-        cameraPositionEnd: [1, -1, 40],
+        cameraPositionEnd: [1, 0.4, 37],
         duration: 1,
         cameraLookAt: new THREE.Vector3(0, 0.2, 0),
       },
       {
-        cameraPositionStart: [1, -1, 40],
-        cameraPositionEnd: [20, -0.5, 24],
+        cameraPositionStart: [1, 0.4, 37],
+        cameraPositionEnd: [1, 0.9, 47],
         duration: 1,
-        cameraLookAt: new THREE.Vector3(30, 0, 20),
+        cameraLookAt: new THREE.Vector3(10, 1.4, 30),
       },
       {
-        cameraPositionStart: [6, -0.5, 80],
-        cameraPositionEnd: [6, -1, 120],
+        cameraPositionStart: [1, 0.9, 47],
+        cameraPositionEnd: [6, -1, 60],
         duration: 1,
-        cameraLookAt: new THREE.Vector3(40, 0.2, 50),
+        cameraLookAt: new THREE.Vector3(-10, 0.2, 38),
       },
       {
         cameraPositionStart: [6, -0.5, 80],
@@ -98,8 +103,13 @@ export default function () {
     };
   }, [stage]);
 
+  // needs to set seek(0), when stage changed
+
   useFrame(() => {
-    tl.current.seek(scroll.offset * tl.current.duration());
+    if (!stageChanged) {
+      tl.current.seek(scroll.offset * tl.current.duration());
+    }
+
     // tl.current.seek(0.0001);
 
     // tl.current.seek(scroll.scroll.current * tl.current.duration());
@@ -109,6 +119,7 @@ export default function () {
     // Scroll Down
     if (scroll.scroll.current == 1) {
       if (!stageChanged) {
+        console.log("da");
         stageUp();
         setstageChanged(true);
         scroll.el.scrollTo({ top: startScrollPosition });
@@ -119,7 +130,7 @@ export default function () {
       if (scroll.scroll.current == 0) {
         stageDown();
         setstageChanged(true);
-        scroll.el.scrollTo({ top: startScrollPosition });
+        scroll.el.scrollTo({ top: endScrollPosition });
       }
     }
 

@@ -1,8 +1,8 @@
 import { BackSide, DoubleSide, FrontSide } from "three";
 import { extend, useFrame } from "@react-three/fiber";
 import { shaderMaterial, useTexture } from "@react-three/drei";
-import flagVertexShader from "./shaders/flag/vertex.glsl";
-import flagFragmentShader from "./shaders/flag/fragment.glsl";
+import flagVertexShader from "/shaders/flag/vertex.glsl";
+import flagFragmentShader from "/shaders/flag/fragment.glsl";
 import { useEffect, useRef } from "react";
 
 const FlagShader = shaderMaterial(

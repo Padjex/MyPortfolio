@@ -144,6 +144,7 @@ export default function Welcome() {
   const hitSound = useMemo(() => {
     return new Audio("./sounds/hit.mp3");
   }, []);
+
   const enableScroll = storeMenager((state) => state.enableScroll);
 
   const collisionEnter = () => {

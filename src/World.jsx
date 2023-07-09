@@ -6,6 +6,7 @@ import {
   PresentationControls,
   Cloud,
   ScrollControls,
+  OrbitControls,
 } from "@react-three/drei";
 import {
   Suspense,
@@ -17,7 +18,8 @@ import {
 } from "react";
 import { Debug, RigidBody, Physics } from "@react-three/rapier";
 import Welcome from "./PhaseTwo/Welcome";
-import Plane from "./PhaseTwo/Plane";
+import Plane from "./Stuff/Plane";
+import Cactus from "./Stuff/Cactus";
 import CameraOnScroll from "./CameraOnScroll";
 import Stage2 from "./AboutMe/Stage2";
 
@@ -70,16 +72,16 @@ export default function World() {
         <RigidBody type="fixed" restitution={0} friction={0}>
           <mesh receiveShadow position-y={-2}>
             <boxGeometry args={[180, 0.5, 280]} />
-            <meshStandardMaterial color="#c3fad6" />
+            <meshStandardMaterial color="#d1d690" />
           </mesh>
         </RigidBody>
         <Suspense>
           <Plane phase={phase} />
+          <Cactus />
         </Suspense>
-
         {welcome ? <Welcome /> : null}
         {enableScroll ? <CameraOnScroll /> : null}
-        {/* <CameraOnScroll /> */}
+        {/* <OrbitControls makeDefault target={[10, 1, 30]} /> */}
         <Stage2 />
       </Physics>
     </>
