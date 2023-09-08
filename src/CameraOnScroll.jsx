@@ -119,7 +119,6 @@ export default function () {
     // Scroll Down
     if (scroll.scroll.current == 1) {
       if (!stageChanged) {
-        console.log("da");
         stageUp();
         setstageChanged(true);
         scroll.el.scrollTo({ top: startScrollPosition });
@@ -142,5 +141,5 @@ export default function () {
     camera.lookAt(smoothedCameraLookAt);
   });
 
-  return <>{/* <OrbitControls enableZoom={false} /> */}</>;
+  return <>{<OrbitControls enableZoom={false} />}</>;
 }
