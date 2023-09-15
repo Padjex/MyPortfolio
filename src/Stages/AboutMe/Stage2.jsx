@@ -4,6 +4,7 @@ import { useRef } from "react";
 import storeMenager from "../../Store/storeMenager";
 
 import Billboard from "../AboutMe/Billboard";
+import BillboardLigths from "./BillboardLigths";
 // import BillboardContent from "../AboutMe/BillboardContent";
 
 export default function Stage2() {
@@ -14,9 +15,10 @@ export default function Stage2() {
       <group position={[10, 0, 30]} rotation-y={Math.PI * 0.8}>
         <Billboard />
         {/* <BillboardContent /> */}
+        <BillboardLigths />
       </group>
       {/*  */}
-      {/* <OrbitControls target={[30, 0, 20]} /> */}
+      {/* <OrbitControls target={[10, 0, 30]} /> */}
       {/*  */}
     </>
   );

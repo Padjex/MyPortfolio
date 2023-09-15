@@ -13,7 +13,7 @@ export default function Lights() {
     {
       DLcolor: "#ffffff",
       ALintensity: {
-        value: 0.05,
+        value: 0.09,
         step: 0.001,
         min: 0,
         max: 10,

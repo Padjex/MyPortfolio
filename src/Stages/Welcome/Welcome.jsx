@@ -7,34 +7,35 @@ import * as THREE from "three";
 import storeMenager from "../../Store/storeMenager";
 import DustAnimation from "../../Stuff/DustAnimation";
 import React from "react";
+import { useControls } from "leva";
 
-const text3DMaterial1 = new THREE.MeshStandardMaterial({
-  metalness: 0.5,
-  roughness: 0,
-  color: "violet",
-});
-const text3DMaterial2 = new THREE.MeshStandardMaterial({
-  // metalness: 0.7,
-  // roughness: 0,
-  // color: "#fff000",
-});
-const text3DMaterial3 = new THREE.MeshStandardMaterial({
-  metalness: 0.7,
-  roughness: 0,
-  color: "#38e0ab",
-});
-const text3DMaterial4 = new THREE.MeshStandardMaterial({
-  metalness: 0.7,
-  roughness: 0,
-  color: "#3a35b8",
-});
+// const text3DMaterial1 = new THREE.MeshStandardMaterial({
+//   metalness: 0.5,
+//   roughness: 0,
+//   color: "violet",
+// });
+// const text3DMaterial2 = new THREE.MeshStandardMaterial({
+//   metalness: 0.7,
+//   roughness: 0,
+//   color: "#fff000",
+// });
+// const text3DMaterial3 = new THREE.MeshStandardMaterial({
+//   metalness: 0.7,
+//   roughness: 0,
+//   color: "#38e0ab",
+// });
+// const text3DMaterial4 = new THREE.MeshStandardMaterial({
+//   metalness: 0.7,
+//   roughness: 0,
+//   color: "#3a35b8",
+// });
 const materialMatCap1 = new THREE.MeshMatcapMaterial();
 const materialMatCap2 = new THREE.MeshMatcapMaterial();
 const matcapTexture1 = new THREE.TextureLoader().load(
-  "./texture/matCap/matcap-opal.png"
+  "./texture/matCap/1233.png"
 );
 const matcapTexture2 = new THREE.TextureLoader().load(
-  "./texture/matCap/matcap-opal.png"
+  "./texture/matCap/matcap-crystal.png"
 );
 materialMatCap1.matcap = matcapTexture1;
 materialMatCap2.matcap = matcapTexture2;
@@ -51,6 +52,7 @@ export function Letter({
   size,
   hitSound,
   rigidBodyProps,
+  id,
 }) {
   const text3DProps = useMemo(() => {
     const text3DProps = {
@@ -105,6 +107,11 @@ export function Letter({
     }, 900);
   };
 
+  // For debug slow internet speed
+  useEffect(() => {
+    console.log("id:", id, "  position:", position, "   letter: ", letter);
+  }, []);
+
   return (
     <>
       <RigidBody {...rigidBodyProps} onCollisionEnter={collisionEnter}>
@@ -155,8 +162,8 @@ export function Word({ wordProp }) {
 
       if (count === word.length) {
         // Needs to set enableScroll = true, when is the last letter
-        if (wordProp.end) {
-        }
+        // if (wordProp.end) {
+        // }
         clearInterval(timer);
       }
     }, 80);
@@ -168,6 +175,7 @@ export function Word({ wordProp }) {
         <Letter
           letter={letter}
           position={letterPosition}
+          id={index}
           key={index}
           newPosition={setLetterPosition}
           material={wordProp.material}
@@ -195,6 +203,21 @@ export default function Welcome() {
 
   const enableScroll = storeMenager((state) => state.enableScroll);
 
+  ////
+  ////// Leva text color
+  ////
+  // const { text3DColor1, text3DColor2, text3DColor3, text3DColor4 } =
+  //   useControls("text3D", {
+  //     text3DColor1: "#38e0ab",
+  //     text3DColor2: "#3a35b8",
+  //     text3DColor3: "#fff000",
+  //     text3DColor4: "#aff3d4",
+  //   });
+  // text3DMaterial1.color.set(text3DColor1);
+  // text3DMaterial2.color.set(text3DColor2);
+  // text3DMaterial3.color.set(text3DColor3);
+  // text3DMaterial4.color.set(text3DColor4);
+
   const wordProps = useMemo(() => {
     return [
       {
@@ -212,7 +235,7 @@ export default function Welcome() {
       },
       {
         startPosition: [4.5, 5, 1],
-        material: materialMatCap2,
+        material: materialMatCap1,
         word: "TO",
         cameraPosition: [-7, -1, 20],
         duration: 0.6,
@@ -225,7 +248,7 @@ export default function Welcome() {
       },
       {
         startPosition: [-13.5, 5, 1.4],
-        material: materialMatCap1,
+        material: materialMatCap2,
         word: "My",
         cameraPosition: [4, -0.9, 22],
         duration: 0.44,
@@ -267,24 +290,31 @@ export default function Welcome() {
       setWord((prevState) => [...prevState, components.pop()]);
       if (count === wordProps.length) clearInterval(timer);
     }, 800);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   useEffect(() => {
     if (word.length === 4) {
-      setTimeout(() => {
+      const timeOut = setTimeout(() => {
         enableScroll();
       }, 1000);
+      return () => {
+        clearTimeout(timeOut);
+      };
     }
   }, [word]);
 
   // proba
   const x = useThree();
   useEffect(() => {
-    const t = new THREE.AxesHelper(2);
+    // const t = new THREE.AxesHelper(2);
     // t.position.x = position.current.x;
-    t.position.y = -1.9;
+    // t.position.y = -1.9;
     // t.position.z = position.current.z;
-    x.scene.add(t);
+    // x.scene.add(t);
 
     return () => {
       x.scene.remove(t);

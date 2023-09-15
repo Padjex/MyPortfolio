@@ -9,7 +9,7 @@ export default function Experience() {
 
   return (
     <>
-      <Perf />
+      <Perf position="top-left" />
 
       <ScrollControls pages={2} damping={0.33}>
         <World />

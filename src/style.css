@@ -106,7 +106,7 @@ body {
     transform: translateX(-50%);
     width: max-content;
 
-    color: #6652ff;
+    color: #dfff51;
 
 }
 
@@ -120,11 +120,11 @@ body {
     background-color: #fdee4c;
     font-size: 80px;
     font-weight: 900;
-    color: #ffffff;
+    color: #000000;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('../public/texture/Billboard/1.jpg');
+    /* background-image: url('../public/texture/Billboard/1.jpg'); */
     background-repeat: no-repeat;
     background-size: cover;
 
